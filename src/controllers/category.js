@@ -17,6 +17,18 @@ const create = async (request, response) => {
   }
 };
 
+const index = async (_, response) => {
+try {
+  const categories = await Category.find()
+  return response.status(200).json(categories)
+} catch (error) {
+  return response.status(500).json({
+    message:error.message
+  })
+}
+}
+
 module.exports = {
   create,
+  index
 };
