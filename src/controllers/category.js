@@ -1,4 +1,3 @@
-const { request } = require("express");
 const Category = require("../models/category");
 
 const create = async (request, response) => {
@@ -38,7 +37,7 @@ const getById = async (request, response) => {
         message: "Category not found",
       });
     }
-    return response.status(200).json(category)
+    return response.status(200).json(category);
   } catch (error) {
     return response.status(500).json({
       message: error.message,
@@ -46,8 +45,27 @@ const getById = async (request, response) => {
   }
 };
 
+const update = async (request, response) => {
+  try {
+    const { id } = request.params;
+    const categoryFound = await Category.findById(id);
+    if (!categoryFound) {
+      return response.status(404).json({ message: "Not found" });
+    }
+
+    await Category.updateOne({ _id: categoryFound._id }, request.body);
+
+    return response
+      .status(200)
+      .json({ message: "Category updated successfully" });
+  } catch (error) {
+    return response.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   create,
   index,
   getById,
+  update,
 };
