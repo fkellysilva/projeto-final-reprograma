@@ -1,3 +1,4 @@
+const { request } = require("express");
 const Category = require("../models/category");
 
 const create = async (request, response) => {
@@ -10,7 +11,7 @@ const create = async (request, response) => {
     }
 
     const createCategory = await Category.create(request.body);
-   
+
     return response.status(200).json(createCategory);
   } catch (error) {
     return response.status(500).json({ message: error.message });
@@ -18,17 +19,35 @@ const create = async (request, response) => {
 };
 
 const index = async (_, response) => {
-try {
-  const categories = await Category.find()
-  return response.status(200).json(categories)
-} catch (error) {
-  return response.status(500).json({
-    message:error.message
-  })
-}
-}
+  try {
+    const categories = await Category.find();
+    return response.status(200).json(categories);
+  } catch (error) {
+    return response.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+const getById = async (request, response) => {
+  try {
+    const { id } = request.params;
+    const category = await Category.findById(id);
+    if (!category) {
+      return response.status(404).json({
+        message: "Category not found",
+      });
+    }
+    return response.status(200).json(category)
+  } catch (error) {
+    return response.status(500).json({
+      message: error.message,
+    });
+  }
+};
 
 module.exports = {
   create,
-  index
+  index,
+  getById,
 };
