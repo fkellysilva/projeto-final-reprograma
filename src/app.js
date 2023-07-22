@@ -4,6 +4,7 @@ const cors = require("cors");
 const database = require("./database/connect");
 const authRoutes = require("./routes/auth");
 const walletRoutes = require("./routes/wallet");
+const categoryRoutes = require("./routes/category")
 const authMiddleware = require("./middlewares/auth");
 
 const app = express();
@@ -15,6 +16,7 @@ database.connect();
 
 app.use("/api/auth", authRoutes);
 app.use("/api/wallet", authMiddleware, walletRoutes);
+app.use("/api/category", authMiddleware,categoryRoutes)
 
 const PORT = process.env.PORT ?? 8000;
 app.listen(PORT, () => console.log(`Running on http://localhost:${PORT}`));
