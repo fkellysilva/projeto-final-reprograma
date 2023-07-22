@@ -5,5 +5,6 @@ const router = express.Router();
 
 router.post("/", walletController.create);
 router.get("/", walletController.getWallet);
+router.delete("/:walletId",walletController.deleteWallet)
 
 module.exports = router;

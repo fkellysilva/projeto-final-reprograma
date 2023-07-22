@@ -36,8 +36,31 @@ const getWallet = async (request, response) => {
         message: "Wallet not found.",
       });
     }
-    
+
     return response.status(200).json(walletFound);
+  } catch (error) {
+    return response.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+const deleteWallet = async (request, response) => {
+  try {
+    const { walletId } = request.params;
+    const walletFound = await Wallet.findById(walletId);
+    console.log(walletFound, walletId);
+    if (!walletFound) {
+      return response.status(404).json({ message: "Wallet not found." });
+    }
+
+    await Wallet.deleteOne({
+      _id: walletFound._id,
+    });
+
+    return response.status(200).json({
+      message: `Wallet '${walletFound.name}' was successfully deleted`,
+    });
   } catch (error) {
     return response.status(500).json({
       message: error.message,
@@ -48,4 +71,5 @@ const getWallet = async (request, response) => {
 module.exports = {
   create,
   getWallet,
+  deleteWallet,
 };
