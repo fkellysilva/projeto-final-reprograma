@@ -63,9 +63,34 @@ const update = async (request, response) => {
   }
 };
 
+const deleteCategory = async (request, response) => {
+  try {
+    const { id } = request.params;
+    const categoryFound = await Category.findById(id);
+    if (!categoryFound) {
+      return response.status(404).json({
+        message: "Category not found.",
+      });
+    }
+
+    await Category.deleteOne({
+      _id: categoryFound._id,
+    });
+
+    return response.status(200).json({
+      message: `Category '${categoryFound.name}' was successfully deleted.`,
+    });
+  } catch (error) {
+    return response.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   create,
   index,
   getById,
   update,
+  deleteCategory,
 };
