@@ -9,19 +9,12 @@ const create = async (request, response) => {
     const { user_id } = jwt.decode(token);
     const wallet = await Wallet.findOne({ user: user_id });
 
-    if (request.body.type === "in") {
-      const newBalance = wallet.balance + request.body.amount;
-      await Wallet.updateOne({ _id: wallet.id }, { balance: newBalance });
-    }
+    const newBalance =
+      request.body.type === "in"
+        ? wallet.balance + request.body.amount
+        : wallet.balance - request.body.amount;
 
-    if (request.body.type === "out") {
-      if (wallet.balance < request.body.amount) {
-        return response.status(400).json({ message: "Insufficient funds" });
-      }
-
-      const newBalance = wallet.balance - request.body.amount;
-      await Wallet.updateOne({ _id: wallet.id }, { balance: newBalance });
-    }
+    await Wallet.updateOne({ _id: wallet.id }, { balance: newBalance });
 
     const createTransaction = await Transaction.create(request.body);
     return response.status(200).json(createTransaction);
@@ -54,19 +47,11 @@ const deleteTransaction = async (request, response) => {
       });
     }
 
-    if (transaction.type === "in") {
-      if (wallet.balance < transaction.amount) {
-        return response.status(400).json({ message: "Insufficient funds" });
-      }
-
-      const newBalance = wallet.balance - transaction.amount;
-      await Wallet.updateOne({ _id: wallet.id }, { balance: newBalance });
-    }
-
-    if (transaction.type === "out") {
-      const newBalance = wallet.balance + transaction.amount;
-      await Wallet.updateOne({ _id: wallet.id }, { balance: newBalance });
-    }
+    const newBalance =
+      transaction.type === "in"
+        ? wallet.balance - transaction.amount
+        : wallet.balance + transaction.amount;
+    await Wallet.updateOne({ _id: wallet.id }, { balance: newBalance });
 
     await Transaction.deleteOne({
       _id: transaction.id,
@@ -82,16 +67,54 @@ const deleteTransaction = async (request, response) => {
 
 const index = async (_, response) => {
   try {
-    const transactions = await Transaction.find()
-    return response.status(200).json(transactions)
+    const transactions = await Transaction.find();
+    return response.status(200).json(transactions);
   } catch (error) {
     return response.status(500).json({
       message: error.message,
     });
   }
 };
+
+const update = async (request, response) => {
+  try {
+    const { id } = request.params;
+    const transaction = await Transaction.findById(id);
+
+    if (!transaction) {
+      return response.status(404).json({ message: "Transaction not found" });
+    }
+    const [, token] = request.get("Authorization").split(" ");
+    const { user_id } = jwt.decode(token);
+    const wallet = await Wallet.findOne({ user: user_id });
+
+    if (request.body.amount) {
+      if (transaction.type === "in") {
+        const newBalance = request.body.amount - transaction.amount;
+        await Wallet.updateOne(
+          { _id: wallet.id },
+          { balance: wallet.balance + newBalance }
+        );
+      } else {
+        const newBalance = request.body.amount - transaction.amount;
+        await Wallet.updateOne(
+          { _id: wallet.id },
+          { balance: wallet.balance - newBalance }
+        );
+      }
+    }
+
+    await Transaction.updateOne({ _id: transaction._id }, request.body);
+    return response
+      .status(200)
+      .json({ message: "Transaction successfully updated" });
+  } catch (error) {
+    return response.status(500).json({ message: error.message });
+  }
+};
 module.exports = {
   create,
   deleteTransaction,
-  index
+  index,
+  update,
 };
