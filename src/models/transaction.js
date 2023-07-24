@@ -21,6 +21,11 @@ const transactionSchema = mongoose.Schema(
     description: {
       type: String,
     },
+
+    category_id: {
+      type:  mongoose.Schema.Types.ObjectId,
+      ref: 'Category'
+    }
   },
   { timestamp: true }
 );

@@ -12,11 +12,11 @@ const create = async (request, response) => {
       });
     }
     const [, token] = request.get("Authorization").split(" ");
-    const { userId } = jwt.decode(token);
+    const { user_id } = jwt.decode(token);
 
     const createdWallet = await Wallet.create({
       ...request.body,
-      user: userId,
+      user: user_id,
     });
     return response.status(200).json(createdWallet);
   } catch (error) {
@@ -27,9 +27,9 @@ const create = async (request, response) => {
 const getWallet = async (request, response) => {
   try {
     const [, token] = request.get("Authorization").split(" ");
-    const { userId } = jwt.decode(token);
+    const { user_id } = jwt.decode(token);
     const walletFound = await Wallet.findOne({
-      user: userId,
+      user: user_id,
     });
     if (!walletFound) {
       return response.status(404).json({
