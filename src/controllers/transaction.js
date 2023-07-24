@@ -17,9 +17,11 @@ const create = async (request, response) => {
       if (wallet.balance < request.body.amount) {
         return response.status(400).json({ message: "Insufficient funds" });
       }
+
       const newBalance = wallet.balance - request.body.amount;
       await Wallet.updateOne({ _id: wallet.id }, { balance: newBalance });
     }
+
     const createTransaction = await Transaction.create(request.body);
     return response.status(200).json(createTransaction);
   } catch (error) {
@@ -29,6 +31,55 @@ const create = async (request, response) => {
   }
 };
 
+const deleteTransaction = async (request, response) => {
+  try {
+    const [, token] = request.get("Authorization").split(" ");
+    const { user_id } = jwt.decode(token);
+    
+    const wallet = await Wallet.findOne({ user: user_id });
+    if (!wallet) {
+      return response.status(404).json({
+        message: "Transaction not found",
+      });
+    }
+
+    const { id } = request.params;
+    const transaction = await Transaction.findOne({
+      _id: id,
+    });
+    if (!transaction) {
+      return response.status(404).json({
+        message: "Transaction not found",
+      });
+    }
+
+    if (transaction.type === "in") {
+      if (wallet.balance < transaction.amount) {
+        return response.status(400).json({ message: "Insufficient funds" });
+      }
+
+      const newBalance = wallet.balance - transaction.amount;
+      await Wallet.updateOne({ _id: wallet.id }, { balance: newBalance });
+    }
+
+    if (transaction.type === "out") {
+      const newBalance = wallet.balance + transaction.amount;
+      await Wallet.updateOne({ _id: wallet.id }, { balance: newBalance });
+    }
+
+    await Transaction.deleteOne({
+      _id: transaction.id,
+    });
+    
+    return response.status(200).json({
+      message: "Transaction successefully deleted",
+    });
+  } catch (error) {
+    return response.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   create,
+  deleteTransaction,
 };
