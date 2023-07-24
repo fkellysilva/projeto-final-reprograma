@@ -1,6 +1,7 @@
 const Transaction = require("../models/transaction");
 const Wallet = require("../models/wallet");
 const jwt = require("jsonwebtoken");
+const { request } = require("express");
 
 const create = async (request, response) => {
   try {
@@ -35,7 +36,7 @@ const deleteTransaction = async (request, response) => {
   try {
     const [, token] = request.get("Authorization").split(" ");
     const { user_id } = jwt.decode(token);
-    
+
     const wallet = await Wallet.findOne({ user: user_id });
     if (!wallet) {
       return response.status(404).json({
@@ -70,7 +71,7 @@ const deleteTransaction = async (request, response) => {
     await Transaction.deleteOne({
       _id: transaction.id,
     });
-    
+
     return response.status(200).json({
       message: "Transaction successefully deleted",
     });
@@ -79,7 +80,18 @@ const deleteTransaction = async (request, response) => {
   }
 };
 
+const index = async (_, response) => {
+  try {
+    const transactions = await Transaction.find()
+    return response.status(200).json(transactions)
+  } catch (error) {
+    return response.status(500).json({
+      message: error.message,
+    });
+  }
+};
 module.exports = {
   create,
   deleteTransaction,
+  index
 };
