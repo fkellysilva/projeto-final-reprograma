@@ -24,26 +24,26 @@
 * [Uso](#usage)
 * [Autor](#authors)
 
-## About The Project
+## Sobre o Projeto
 
 ![Screen Shot](images/screenshot.png)
 
 FinSmart é uma plataforma para ajudar na administração financeira dos usuários, com uma interface simples para registrar, classificar e acompanhar os gastos mensais.
 
 
-## Built With
+## Feito com:
 
 Utilizando tecnologias modernas, como Node.Js, Express.js e MongoDB como banco de dados NoSQL, a plataforma é hospedada no Render, garantindo uma experiência confiável.
 
-## Getting Started
+## Iniciando
 
 Esta é uma API em node.js, portanto, o Node deve estar instalado na sua máquina para rodar o projeto.
 
-### Prerequisites
+### Pre-requisito
 
 O Node e o npm precisam estar instalados e atualizados.
 
-### Installation
+### Instalação
 
 1. Clone o repositório
 
@@ -61,7 +61,7 @@ npm i ou npm install
 
 4. Preencha as variáveis de ambiente no `.env`
 
-## Usage
+## Uso
 
 Para começar a utilizar a API, copie a URL a seguir e use no seu HTTP client favorito (Insomnia, Postman, Thunder Client, etc.)
 
@@ -70,6 +70,6 @@ link do render
 ```
 
 
-## Authors
+## Autor
 
 * **Francielly Kelly** - *Estudante de Análise e Desenvolvimento de Sistema* - [Francielly Kelly](https://github.com/fkellysilva) - **
