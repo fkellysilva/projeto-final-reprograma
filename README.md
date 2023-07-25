@@ -1,5 +1,8 @@
 <br/>
 <p align="center">
+  <a href="https://github.com/fkellysilva/projeto-final-reprograma">
+    <img src="https://raw.githubusercontent.com/fkellysilva/projeto-final-reprograma/main/fInsmart-logo.png" alt="Finsmart" width="300" height="300">
+  </a>
   <h3 align="center">FinSmart</h3>
 
   <p align="center">
@@ -12,24 +15,23 @@
   </p>
 </p>
 
-![Contributors](https://img.shields.io/github/contributors/fkellysilva/projeto-final-reprograma?color=dark-green) ![Stargazers](https://img.shields.io/github/stars/fkellysilva/projeto-final-reprograma?style=social) ![Issues](https://img.shields.io/github/issues/fkellysilva/projeto-final-reprograma) ![License](https://img.shields.io/github/license/fkellysilva/projeto-final-reprograma) 
+![Contributors](https://img.shields.io/github/contributors/fkellysilva/projeto-final-reprograma?color=dark-green) ![Stargazers](https://img.shields.io/github/stars/fkellysilva/projeto-final-reprograma?style=social) ![Issues](https://img.shields.io/github/issues/fkellysilva/projeto-final-reprograma) ![License](https://img.shields.io/github/license/fkellysilva/projeto-final-reprograma)
 
 ## Table Of Contents
 
-* [Sobre o projeto](#about-the-project)
-* [Feito com](#built-with)
-* [Iniciando](#getting-started)
-  * [Pré-requisitos](#prerequisites)
-  * [Instalção](#installation)
-* [Uso](#usage)
-* [Autor](#authors)
+- [Sobre o projeto](#about-the-project)
+- [Feito com](#built-with)
+- [Iniciando](#getting-started)
+  - [Pré-requisitos](#prerequisites)
+  - [Instalção](#installation)
+- [Uso](#usage)
+- [Autor](#authors)
 
 ## Sobre o Projeto
 
 ![Screen Shot](images/screenshot.png)
 
 FinSmart é uma plataforma para ajudar na administração financeira dos usuários, com uma interface simples para registrar, classificar e acompanhar os gastos mensais.
-
 
 ## Feito com:
 
@@ -51,7 +53,7 @@ O Node e o npm precisam estar instalados e atualizados.
 git clone https://github.com/fkellysilva/projeto-final-reprograma.git
 ```
 
-2. na raíz do projeto, instale as dependencias 
+2. na raíz do projeto, instale as dependencias
 
 ```sh
 npm i ou npm install
@@ -69,7 +71,6 @@ Para começar a utilizar a API, copie a URL a seguir e use no seu HTTP client fa
 link do render
 ```
 
-
 ## Autor
 
-* **Francielly Kelly** - *Estudante de Análise e Desenvolvimento de Sistema* - [Francielly Kelly](https://github.com/fkellysilva) - **
+- **Francielly Kelly** - _Estudante de Análise e Desenvolvimento de Sistema_ - [Francielly Kelly](https://github.com/fkellysilva) - \*\*
