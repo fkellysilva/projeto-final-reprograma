@@ -7,7 +7,7 @@ const create = async (request, response) => {
       name: request.body.name,
     });
     if (walletFound) {
-      return response.status(406).json({
+      return response.status(409).json({
         message: "This wallet already exists.",
       });
     }

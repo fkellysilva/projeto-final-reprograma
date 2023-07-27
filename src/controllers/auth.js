@@ -36,12 +36,12 @@ const signin = async (request, response) => {
   try {
     const user = await User.findOne({ email: request.body.email });
     if (!user) {
-      return response.status(404).json({ message: error.message });
+      return response.status(404).json({ message: "User does not exists" });
     }
 
     const password = bcrypt.compareSync(request.body.password, user.password);
     if (!password) {
-      return response.status(401).json({ message: "invalid credentiols" });
+      return response.status(401).json({ message: "invalid credentials" });
     }
 
     const token = jwt.sign(

@@ -1,7 +1,6 @@
 const Transaction = require("../models/transaction");
 const Wallet = require("../models/wallet");
 const jwt = require("jsonwebtoken");
-const { request } = require("express");
 
 const create = async (request, response) => {
   try {
@@ -9,6 +8,9 @@ const create = async (request, response) => {
     const { user_id } = jwt.decode(token);
     const wallet = await Wallet.findOne({ user: user_id });
 
+    if(!wallet){
+      return response.status(404).json({message:"Wallet not found"})
+    }
     const newBalance =
       request.body.type === "in"
         ? wallet.balance + request.body.amount

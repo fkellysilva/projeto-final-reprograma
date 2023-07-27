@@ -24,7 +24,8 @@ const transactionSchema = mongoose.Schema(
 
     category_id: {
       type:  mongoose.Schema.Types.ObjectId,
-      ref: 'Category'
+      ref: 'Category',
+      required: true,
     }
   },
   { timestamp: true }

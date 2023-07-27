@@ -1,0 +1,817 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "REST API",
+    "description": ""
+  },
+  "host": "localhost:3000",
+  "basePath": "/api/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "description": "Creates a new account",
+        "tags": [
+          "auth"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "Jane Doe"
+                },
+                "email": {
+                  "example": "jane.d@mail.com"
+                },
+                "password": {
+                  "example": "test123"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "User ID",
+                  "example": "64c1d0ee606e3e0606a6ec81"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The user name",
+                  "example": "Jane Doe"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "The user email address",
+                  "example": "jane.d@mail.com"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "description": "Error message",
+                  "example": "User already exists."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "description": "Logs an user in",
+        "tags": [
+          "auth"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "jane.d@mail.com"
+                },
+                "password": {
+                  "example": "test123"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "description": "A JWT token to authenticate the user",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjRiODQ1N2YyMzQ5MTgyNWUzNTNiZGUzIiwiZW1haWwiOiJmcmFhbmNhMmllbGFhYWwyeTJreUBnbWFpbC5jb20iLCJpYXQiOjE2ODk5MDI4NzF9.vPnkW-Eq3_LbGBiX9CY7mDzwDicbEoPlBAWVDqh2_-Q"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "description": "error message",
+                  "example": "invalid credentials"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "object",
+                  "description": "Error message",
+                  "example": "User does not exists"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/wallet": {
+      "post": {
+        "description": "Creates new wallet",
+        "tags": [
+          "wallet"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "Wallet ID",
+                  "example": "64c1d932469ec5f1160b6d93"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Carteira 1",
+                  "description": "Wallet name"
+                },
+                "balance": {
+                  "type": "number",
+                  "description": "Wallet balance",
+                  "example": 10
+                },
+                "user": {
+                  "type": "string",
+                  "description": "User ID from the wallet owner",
+                  "example": "64b8457f23491825e353bde3"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "carteira 1"
+                },
+                "user": {
+                  "type": "string",
+                  "example": "64b8457f23491825e353bde3"
+                },
+                "balance": {
+                  "type": "number",
+                  "example": 15
+                },
+                "_id": {
+                  "type": "string",
+                  "example": "64c1d932469ec5f1160b6d93"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "This wallet already exists."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "description": "Gets the single wallet created by the user",
+        "tags": [
+          "wallet"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "64c1d932469ec5f1160b6d93"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "carteira 1"
+                },
+                "user": {
+                  "type": "string",
+                  "example": "64b8457f23491825e353bde3"
+                },
+                "balance": {
+                  "type": "number",
+                  "example": 15
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "description": "Error message",
+                  "example": "User already exists."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/wallet/{id}": {
+      "delete": {
+        "description": "Deletes a wallet",
+        "tags": [
+          "wallet"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Wallet '{name}' was successfully deleted"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Wallet not found."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "patch": {
+        "description": "Updates a wallet",
+        "tags": [
+          "wallet"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "wallet 2"
+                },
+                "amount": {
+                  "type": "number",
+                  "example": 12
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Wallet updated successfully"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "description": "Error message",
+                  "example": "Not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/category": {
+      "post": {
+        "description": "Creates a new category",
+        "tags": [
+          "category"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "Jane Doe"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "cateogry ID",
+                  "example": "64c1d0ee606e3e0606a6ec81"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The category name",
+                  "example": "new category name"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "description": "Error message",
+                  "example": "This category already exists"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Get all categories",
+        "tags": [
+          "category"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "example": "64bbfc66c4cd3003273b56bf"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "PETS"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/category/{id}": {
+      "get": {
+        "description": "Get category by id",
+        "tags": [
+          "category"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "64bbfc66c4cd3003273b56bf"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "PETS"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "description": "Error message",
+                  "example": "Category not found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes a category",
+        "tags": [
+          "category"
+        ],
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Category '{categoryName}' was successfully deleted."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "description": "Error message",
+                  "example": "Category not found."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "patch": {
+        "description": "Updates a category",
+        "tags": [
+          "category"
+        ],
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "New category name"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Category updated successfully"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "description": "Error message",
+                  "example": "Not found."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/transaction": {
+      "post": {
+        "description": "Create a new transaction",
+        "tags": [
+          "transaction"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "type": "number",
+                  "example": 100
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Pet food"
+                },
+                "type": {
+                  "enum": [
+                    "in",
+                    "out"
+                  ],
+                  "example": "in"
+                },
+                "category_id": {
+                  "type": "string",
+                  "example": "64bc255eda9074bec0db7993"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Transaction created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "92bc255eda9074bec0db31234"
+                },
+                "amount": {
+                  "type": "number",
+                  "example": 100
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Pet food"
+                },
+                "type": {
+                  "enum": [
+                    "in",
+                    "out"
+                  ],
+                  "example": "in"
+                },
+                "category_id": {
+                  "type": "string",
+                  "example": "64bc255eda9074bec0db7993"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "description": "Error message",
+                  "example": "Wallet not found."
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Get all transactions",
+        "tags": [
+          "transaction"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "example": "64bbfc66c4cd3003273b56bf"
+                  },
+                  "amount": {
+                    "type": "number",
+                    "example": 100
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "pet 2"
+                  },
+                  "type": {
+                    "enum": [
+                      "in",
+                      "out"
+                    ],
+                    "example": "out"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction/{id}": {
+      "delete": {
+        "description": "deletes transaction by id",
+        "tags": [
+          "transaction"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Transaction successefully deleted"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Not found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "Updates transaction",
+        "tags": [
+          "transaction"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "description": "Carteira exemplo"
+                },
+                "amount": {
+                  "type": "number",
+                  "example": 10
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "description":  "Transaction successfully updated", 
+                  "example": "Transaction successfully updated"
+                }
+              }
+            }
+          }, 
+          "404":{
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "object",
+                  "description": "Error message",
+                  "example": "Transaction does not exists"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
