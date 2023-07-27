@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/app.js",
+    "start": "node src/app.js",
     "swagger-autogen": "node swagger.js"
   },
   "keywords": [],
