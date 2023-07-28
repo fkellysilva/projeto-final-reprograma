@@ -3,16 +3,17 @@ const Wallet = require("../models/wallet");
 
 const create = async (request, response) => {
   try {
+    const [, token] = request.get("Authorization").split(" ");
+    const { user_id } = jwt.decode(token);
+
     const walletFound = await Wallet.findOne({
-      name: request.body.name,
+      $or: [{ name: request.body.name }, { user: user_id }],
     });
     if (walletFound) {
       return response.status(409).json({
         message: "This wallet already exists.",
       });
     }
-    const [, token] = request.get("Authorization").split(" ");
-    const { user_id } = jwt.decode(token);
 
     const createdWallet = await Wallet.create({
       ...request.body,
@@ -79,7 +80,9 @@ const updateWallet = async (request, response) => {
 
     await Wallet.updateOne({ _id: walletFound._id }, request.body);
 
-    return response.status(200).json({message: "Wallet updated successfully"});
+    return response
+      .status(200)
+      .json({ message: "Wallet updated successfully" });
   } catch (error) {
     return response.status(500).json({
       message: error.message,
