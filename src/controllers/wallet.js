@@ -4,10 +4,10 @@ const Wallet = require("../models/wallet");
 const create = async (request, response) => {
   try {
     const [, token] = request.get("Authorization").split(" ");
-    const { user_id } = jwt.decode(token);
+    const { userId } = jwt.decode(token);
 
     const walletFound = await Wallet.findOne({
-      $or: [{ name: request.body.name }, { user: user_id }],
+      $or: [{ name: request.body.name }, { user: userId }],
     });
     if (walletFound) {
       return response.status(409).json({
@@ -17,7 +17,7 @@ const create = async (request, response) => {
 
     const createdWallet = await Wallet.create({
       ...request.body,
-      user: user_id,
+      user: userId,
     });
     return response.status(200).json(createdWallet);
   } catch (error) {
@@ -28,9 +28,9 @@ const create = async (request, response) => {
 const getWallet = async (request, response) => {
   try {
     const [, token] = request.get("Authorization").split(" ");
-    const { user_id } = jwt.decode(token);
+    const { userId } = jwt.decode(token);
     const walletFound = await Wallet.findOne({
-      user: user_id,
+      user: userId,
     });
     if (!walletFound) {
       return response.status(404).json({
