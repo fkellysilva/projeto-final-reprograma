@@ -45,7 +45,7 @@ const signin = async (request, response) => {
     }
 
     const token = jwt.sign(
-      { userId: user.id, email: request.body.email },
+      { user_id: user.id, email: request.body.email },
       SECRET
     );
 

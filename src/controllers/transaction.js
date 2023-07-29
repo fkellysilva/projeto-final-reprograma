@@ -5,11 +5,11 @@ const jwt = require("jsonwebtoken");
 const create = async (request, response) => {
   try {
     const [, token] = request.get("Authorization").split(" ");
-    const { userId } = jwt.decode(token);
-    const wallet = await Wallet.findOne({ user: userId });
+    const { user_id } = jwt.decode(token);
+    const wallet = await Wallet.findOne({ user: user_id });
 
-    if(!wallet){
-      return response.status(404).json({message:"Wallet not found"})
+    if (!wallet) {
+      return response.status(404).json({ message: "Wallet not found" });
     }
     const newBalance =
       request.body.type === "in"
@@ -30,9 +30,9 @@ const create = async (request, response) => {
 const deleteTransaction = async (request, response) => {
   try {
     const [, token] = request.get("Authorization").split(" ");
-    const { userId } = jwt.decode(token);
+    const { user_id } = jwt.decode(token);
 
-    const wallet = await Wallet.findOne({ user: userId });
+    const wallet = await Wallet.findOne({ user: user_id });
     if (!wallet) {
       return response.status(404).json({
         message: "Transaction not found",
@@ -87,8 +87,9 @@ const update = async (request, response) => {
       return response.status(404).json({ message: "Transaction not found" });
     }
     const [, token] = request.get("Authorization").split(" ");
-    const { userId } = jwt.decode(token);
-    const wallet = await Wallet.findOne({ user: userId });
+    const { user_id } = jwt.decode(token);
+
+    const wallet = await Wallet.findOne({ user: user_id });
 
     if (request.body.amount) {
       if (transaction.type === "in") {
